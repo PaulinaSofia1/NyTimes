@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Single Fetch</title>
+  </head>
+
+  <body>
+    <div id="topArticles"></div>
+    <script>
+
+      let SearchTerm="Covid-19" /// will be the id to locate term later
+      let numberArticles= 5;/// locate terms later
+
+      let nytimeUrl = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + SearchTerm+ "&api-key=TcnKDGbGWdL2xDkPt41JKmL09JiX73hW"
+
+      console.log(nytimeUrl)
+
+      fetch(nytimeUrl)
+      .then(function (data){
+        return data.json()
+      }).then(function (data) {
+          let articleList=data.response.docs.slice(0,numberArticles)
+          let topArticles = document.getElementById("topArticle")
+
+
+          articleList.forEach(function(article){
+            console.log(article)
+            let articleHeadline= document.createElement("h4")
+            articleHeadline.textContent=article.head.main;
+            console.log(articleHeadline)
+
+            let articleSource = article.source;
+            let articleSection = article.section_name;
+            let articlePubDate = article.pub_date;
+            let articleUrl = article.web_url;
+
+
+            let articleContainer = document.createElement("div");
+            articleContainer.textContent=articleHeadline + articleSource + articleSection + articlePubDate + articleUrl;
+            topArticles.appendChild(articleContainer)
+
+
+
+          });
+      })
+
+    </script>
+  </body>
+</html>
